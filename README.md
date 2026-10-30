@@ -1,2 +1,3 @@
 # IT-Bootcamp---SQL
-Repozitorijum sa SQL projektom
+
+Moje ime je Marina Tošić i ovo je moj SQL projekat.
