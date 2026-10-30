@@ -93,6 +93,57 @@ order by m.season asc, num_of_matches desc;
 select referee_name from referees where referee_id=17
 
 5. Играчи: пет најбољих стрелаца и пет најбољих асистената.
+
+with goals_pp as(
+select 
+m.season,
+me.player_id, 
+sum(case when event_type in ('goal', 'penalty_goal') then 1
+         else 0
+         end) as goals_per_player
+from match_events me
+join matches m on m.match_id=me.match_id 
+group by m.season, me.player_id
+order by goals_per_player desc --612 redova
+)
+select season,goals_pp.player_id, goals_per_player, 
+p.first_name, p.last_name,
+row_number() over (partition by season order by goals_per_player desc) as rank
+from goals_pp
+join players p on p.player_id=goals_pp.player_id
+qualify rank<=5;
+
+with goals_pp as(
+select 
+m.season,
+me.related_player_id, 
+sum(case when event_type in ('goal', 'penalty_goal') then 1
+         else 0
+         end) as goals_per_player
+from match_events me
+join matches m on m.match_id=me.match_id 
+group by m.season, me.related_player_id
+order by goals_per_player desc --612 redova
+)
+select 
+season,
+goals_pp.related_player_id, 
+goals_per_player, 
+p.first_name, p.last_name,
+row_number() over (partition by season order by goals_per_player desc) as rank
+from goals_pp
+join players p on p.player_id=goals_pp.related_player_id
+qualify rank<=5;
+
 6. Квалитет података: бар два проблема на која сте наишли у подацима (на пример утакмица
 чији резултат се не слаже са догађајима, догађаји са непостојећим играчем, дан без
 тренера), са упитима који их проналазе.
+
+select * from match_events where player_id is null and event_type in ('goal', 'penalty_goal', 'own_goal');
+
+select * from referees;
+Kolona debut season ima nelogicne vrednosti, oblika 2014/21, 2013/22, 2015/20...
+
+U tabeli players, prvi deo tabele su sudije, a ne igraci.
+select * from players;
+
