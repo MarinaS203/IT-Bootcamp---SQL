@@ -130,4 +130,4 @@ select manager_name from manager_spells where team_id=9;
 select team_name from teams where team_id=9;
 --Zoran Tošić, 32 poena, Harrowgate Albion
 
--- select * from matches where (home_goals_ht<away_goals_ht and home_goals>away_goals) or(away_goals_ht<home_goals_ht and away_goals>home_goals)
+-- select * from matches where (home_goals_ht<away_goals_ht and home_goals>away_goals) or(away_goals_ht<home_goals_ht and away_goals>home_goals)git
