@@ -104,7 +104,7 @@ left join match_events me on m.match_id = me.match_id and me.event_type in ('red
 where m.status = 'played' and m.season = '2024/25'
 group by m.referee_id
 order by avg_cards desc;
---Meni ovaj rezultat deluje sumnjivo. Sumnjam da se desilo neko umnozavanje redova ovde, ali nisam sigurna kako da ovo ispravim na drugaciji, zato ga nisam uradila ni na testu u petak. Google kaze da prosecan broj kartona po utakmici jeste od 4-5 tako da izgleda da ipak jeste dobro.  
+--Brinula sam se zbog umnozavanja redova, ali Google kaze da prosecan broj kartona po utakmici jeste od 4-5 tako da izgleda da ipak jeste dobro.  
 
 select referee_name from referees where referee_id=4
 
