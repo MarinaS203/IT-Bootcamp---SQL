@@ -1,24 +1,24 @@
 
 use bootcamp.northern_star;
-CREATE OR REPLACE VIEW bootcamp.northern_star.team_matches AS
-WITH sides AS (
-SELECT match_id, season, matchday, kickoff_ts,
-home_team_id AS team_id, away_team_id AS opponent_id, 'home' AS
+create or replace view bootcamp.northern_star.team_matches as
+with sides as (
+select match_id, season, matchday, kickoff_ts,
+home_team_id as team_id, away_team_id AS opponent_id, 'home' as
 venue,
-home_goals AS goals_for, away_goals AS goals_against
-FROM bootcamp.northern_star.matches WHERE status = 'played'
-UNION ALL
-SELECT match_id, season, matchday, kickoff_ts,
+home_goals as goals_for, away_goals as goals_against
+from bootcamp.northern_star.matches where status = 'played'
+union all
+select match_id, season, matchday, kickoff_ts,
 away_team_id, home_team_id, 'away',
 away_goals, home_goals
-FROM bootcamp.northern_star.matches WHERE status = 'played'
+from bootcamp.northern_star.matches where status = 'played'
 )
-SELECT *,
-CASE WHEN goals_for > goals_against THEN 'W'
-WHEN goals_for = goals_against THEN 'D' ELSE 'L' END AS result,
-CASE WHEN goals_for > goals_against THEN 3
-WHEN goals_for = goals_against THEN 1 ELSE 0 END AS points
-FROM sides;
+select *,
+case when goals_for > goals_against then 'W'
+when goals_for = goals_against then 'D' else 'L' end as result,
+case when goals_for > goals_against then 3
+when goals_for = goals_against then 1 else 0 end as points
+from sides;
 
 1. Колики удео у укупном броју голова лиге у сезони 2024/25 има сваки клуб? Ко има највећи
 удео?
