@@ -2,7 +2,7 @@ use bootcamp.sandbox;
 
 --Tabela sa timovima
 
-CREATE OR REPLACE TABLE dim_team AS
+create or replace table dim_team as
 select distinct team_id, team_name, short_name as team_code
 from bootcamp.northern_star.teams
 order by team_id asc;
@@ -10,35 +10,35 @@ order by team_id asc;
 select * from dim_team;
 
 --Tabela sa datumima
-CREATE OR REPLACE TABLE dim_date AS
-SELECT CAST(DATE_FORMAT(d, 'yyyyMMdd') AS INT) AS date_key,
-       d                                       AS full_date,
-       DATE_FORMAT(d, 'EEEE')                  AS weekday_name,
-       DAYOFWEEK(d) IN (1, 7)                  AS is_weekend,
-       CASE WHEN MONTH(d) >= 7 THEN CONCAT(YEAR(d), '/', SUBSTRING(CAST(YEAR(d) + 1 AS STRING), 3, 2))
-            ELSE CONCAT(YEAR(d) - 1, '/', SUBSTRING(CAST(YEAR(d) AS STRING), 3, 2))
-       END                                     AS season
-FROM (SELECT EXPLODE(SEQUENCE(DATE'2023-07-01', DATE'2025-06-30', INTERVAL 1 DAY)) AS d);
+create or replace table dim_date as
+select cast(date_format(d, 'yyyyMMdd') as int) as date_key,
+       d                                       as full_date,
+       date_format(d, 'EEEE')                  as weekday_name,
+       dayofweek(d) in (1, 7)                  as is_weekend,
+       case when month(d) >= 7 then concat(year(d), '/', substring(cast(year(d) + 1 as string), 3, 2))
+            else concat(year(d) - 1, '/', substring(cast(year(d) as string), 3, 2))
+       end                                   as season
+from (select explode(sequence(date'2023-07-01', date'2025-06-30', interval 1 day)) as d);
 
 select * from dim_date;
 
 --Tabela sa igracima
 
-CREATE OR REPLACE TABLE dim_players AS
+create or replace table dim_players as
 select distinct player_id, first_name, last_name
 from bootcamp.northern_star.players
 where player_id is not null
-UNION
-SELECT -1, 'Nepoznat', 'Nepoznat'
-ORDER BY player_id ASC;
+union
+select -1, 'Nepoznat', 'Nepoznat'
+order by player_id asc;
 
 select * from dim_players;
 
 --Tabela sa sudijama
-CREATE OR REPLACE TABLE dim_referee AS
-SELECT DISTINCT referee_id, referee_name
-FROM bootcamp.northern_star.referees
-ORDER BY referee_id;
+create or replace table dim_referee as
+select distinct referee_id, referee_name
+from bootcamp.northern_star.referees
+order by referee_id;
 
 select * from dim_referee;
 
